@@ -107,7 +107,7 @@ public class BTree {
         if (root.m == 0 && !root.leaf) {
             root = root.children[0];
         }
-    }
+    }   
 
     private void delete(Node node, int key) {
         int i = 0;
@@ -145,7 +145,7 @@ public class BTree {
 
     private void removeFromNonLeaf(Node node, int idx) {
         int key = node.keys[idx];
-        if (node.children[idx].m >= M / 2) {
+        if (node.children[idx].m >= M / 2) { // 确保子节点至少有 M/2 个键
             int pred = getPred(node, idx);
             node.keys[idx] = pred;
             delete(node.children[idx], pred);
@@ -159,6 +159,7 @@ public class BTree {
         }
     }
 
+    // 获取前驱和后继节点
     private int getPred(Node node, int idx) {
         Node curr = node.children[idx];
         while (!curr.leaf) {
@@ -167,6 +168,7 @@ public class BTree {
         return curr.keys[curr.m - 1];
     }
 
+    // 获取后继节点
     private int getSucc(Node node, int idx) {
         Node curr = node.children[idx + 1];
         while (!curr.leaf) {
@@ -175,6 +177,7 @@ public class BTree {
         return curr.keys[0];
     }
 
+    // 填充节点
     private void fill(Node node, int idx) {
         if (idx != 0 && node.children[idx - 1].m >= M / 2) {
             borrowFromPrev(node, idx);
@@ -189,6 +192,7 @@ public class BTree {
         }
     }
 
+    // 从前一个兄弟节点借取键
     private void borrowFromPrev(Node node, int idx) {
         Node child = node.children[idx];
         Node sibling = node.children[idx - 1];
@@ -209,6 +213,7 @@ public class BTree {
         sibling.m--;
     }
 
+    //  从后一个兄弟节点借取键
     private void borrowFromNext(Node node, int idx) {
         Node child = node.children[idx];
         Node sibling = node.children[idx + 1];
@@ -229,6 +234,7 @@ public class BTree {
         sibling.m--;
     }
 
+    // 合并节点
     private void merge(Node node, int idx) {
         Node child = node.children[idx];
         Node sibling = node.children[idx + 1];

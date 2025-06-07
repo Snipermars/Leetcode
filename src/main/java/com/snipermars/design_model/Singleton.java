@@ -2,13 +2,13 @@ package com.snipermars.design_model;
 
 // 单例模式
 public class Singleton {
-    private static Singleton instance;
+    private static volatile Singleton instance;
 
     // 私有构造函数
     private Singleton() {}
 
-    // 获取唯一实例
-    public static Singleton getInstance() {
+    // 懒汉式单例模式，线程不安全
+    public static synchronized Singleton getInstance() {
         if (instance == null) {
             instance = new Singleton();
         }

@@ -1,5 +1,14 @@
 package com.snipermars.tree_example;
 
+
+// 红黑树关键点
+// 红黑树的每个节点都有一个颜色（红色或黑色），并遵循以下规则：
+
+// 每个节点要么是红色，要么是黑色
+// 根节点是黑色
+// 所有叶子节点（NIL 节点，空节点）是黑色
+// 如果一个节点是红色的，则它的子节点必须是黑色的
+// 对每个节点，从该节点到其所有后代叶节点的简单路径上，均包含相同数目的黑色节点
 public class RedBlackTree {
     private static final boolean RED = true;
     private static final boolean BLACK = false;
@@ -51,6 +60,13 @@ public class RedBlackTree {
         root.color = BLACK;
     }
 
+//  插入操作遵循标准的二叉搜索树插入逻辑，但插入后需要通过旋转和颜色转换来恢复红黑树的性质：
+
+//  递归插入新节点，新节点默认为红色
+//  自底向上调整树结构：
+//  如果右子节点是红色而左子节点是黑色，进行左旋转
+//  如果左子节点是红色且左子节点的左子节点也是红色，进行右旋转
+//  如果左右子节点均为红色，进行颜色转换
     private Node insert(Node h, int key) {
         if (h == null) return new Node(key, RED);
 
@@ -58,6 +74,7 @@ public class RedBlackTree {
         else if (key > h.key) h.right = insert(h.right, key);
         else h.key = key;
 
+        
         if (isRed(h.right) && !isRed(h.left)) h = rotateLeft(h);
         if (isRed(h.left) && isRed(h.left.left)) h = rotateRight(h);
         if (isRed(h.left) && isRed(h.right)) flipColors(h);

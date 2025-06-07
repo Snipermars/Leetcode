@@ -60,6 +60,19 @@ public class AVLTree {
         return x;
     }
 
+    private Node search(Node node, int key) {
+        if (node == null || node.key == key) {
+            return node;
+        }
+
+        return (key < node.key) ? search(node.left, key) : search(node.right, key);
+    }
+
+
+    public void search(int key){
+        search(root, key);
+    }
+
     public void insert(int key){
         root = insert(root, key);
     }
